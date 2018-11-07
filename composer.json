@@ -14,6 +14,7 @@
         "psr/log": "1.0.2",
         "ext-json": "*",
         "mailgun/mailgun-php": "^2.3",
+        "mandrill/mandrill": "^1.0",
         "symfony/translation": "4.*",
         "symfony/templating": "4.*",
         "symfony/routing": "4.*"

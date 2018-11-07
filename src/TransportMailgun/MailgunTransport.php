@@ -68,7 +68,7 @@ class MailgunTransport implements MailerTransport
         try {
             $this->mailgun->messages()->send($this->domain, $mailParams);
         } catch (\Exception $e) {
-            throw new MailerException("", 0, $e);
+            throw new MailerException("Couldn't send mail through Mailgun", 0, $e);
         }
     }
 }
