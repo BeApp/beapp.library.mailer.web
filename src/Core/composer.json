@@ -1,0 +1,25 @@
+{
+    "name": "beapp/mailer-core",
+    "description": "Core mailer library",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Damien Villeneuve",
+            "email": "d.villeneuve@beapp.fr"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "ext-json": "*",
+        "psr/log": "1.0.2",
+        "symfony/translation": "4.*",
+        "symfony/templating": "4.*",
+        "symfony/routing": "4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Beapp\\Email\\Core\\": ""
+        }
+    }
+}
