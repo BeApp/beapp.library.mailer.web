@@ -3,6 +3,7 @@
 namespace Beapp\Email\Transport;
 
 use Beapp\Email\Core\Mail;
+use Beapp\Email\Core\MailerException;
 use Beapp\Email\Core\Transport\MailerTransport;
 use Mailgun\Mailgun;
 
@@ -39,7 +40,10 @@ class MailgunTransport implements MailerTransport
     }
 
     /**
+     * Delivers the email to the recipients through a specific channel (direct call to client, publish to AMQP server, etc...)
+     *
      * @param Mail $email
+     * @throws MailerException
      */
     public function sendEmail(Mail $email): void
     {
@@ -61,6 +65,10 @@ class MailgunTransport implements MailerTransport
         $mailParams['text'] = $email->getTextContent();
         $mailParams['html'] = $email->getHtmlContent();
 
-        $this->mailgun->messages()->send($this->domain, $mailParams);
+        try {
+            $this->mailgun->messages()->send($this->domain, $mailParams);
+        } catch (\Exception $e) {
+            throw new MailerException("", 0, $e);
+        }
     }
 }
