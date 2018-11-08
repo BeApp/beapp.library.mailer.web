@@ -64,6 +64,7 @@ class MailerService
      * The {@link MailerTransport} offers an abstraction to send an email thought different channel.
      *
      * @param MailTemplate $mailTemplate
+     * @throws MailerException
      */
     public function sendMail(MailTemplate $mailTemplate)
     {

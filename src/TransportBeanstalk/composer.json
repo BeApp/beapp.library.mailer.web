@@ -1,6 +1,6 @@
 {
-    "name": "beapp/mailer-transport-mailgun",
-    "description": "Mailgun transport for Mailer library",
+    "name": "beapp/mailer-transport-beanstalk",
+    "description": "Beanstalk transport for Mailer library",
     "type": "library",
     "license": "MIT",
     "version": "0.1.0",
@@ -8,7 +8,7 @@
         "mail",
         "email",
         "symfony",
-        "mailgun"
+        "beanstalkd"
     ],
     "authors": [
         {
@@ -19,7 +19,7 @@
     "require": {
         "php": ">=7.1",
         "beapp/mailer-core": "0.1.*",
-        "mailgun/mailgun-php": "^2.3"
+        "pda/pheanstalk": "^3.2"
     },
     "autoload": {
         "psr-4": {

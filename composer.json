@@ -3,6 +3,12 @@
     "description": "Mailer library for Symfony project",
     "type": "library",
     "license": "MIT",
+    "version": "0.1.0",
+    "keywords": [
+        "mail",
+        "email",
+        "symfony"
+    ],
     "authors": [
         {
             "name": "Damien Villeneuve",
@@ -14,13 +20,19 @@
         "psr/log": "1.0.2",
         "ext-json": "*",
         "mailgun/mailgun-php": "^2.3",
+        "mandrill/mandrill": "^1.0",
+        "pda/pheanstalk": "^3.2",
+        "php-amqplib/rabbitmq-bundle": "^1.14",
         "symfony/translation": "4.*",
         "symfony/templating": "4.*",
         "symfony/routing": "4.*"
     },
     "replace": {
         "beapp/mailer-core": "self.version",
-        "beapp/mailer-client-mailgun": "self.version"
+        "beapp/mailer-transport-mailgun": "self.version",
+        "beapp/mailer-transport-mandrill": "self.version",
+        "beapp/mailer-transport-beanstalk": "self.version",
+        "beapp/mailer-transport-rabbitmq": "self.version"
     },
     "autoload": {
         "psr-4": {

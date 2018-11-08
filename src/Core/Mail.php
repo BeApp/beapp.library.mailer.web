@@ -6,9 +6,11 @@ class Mail implements \JsonSerializable
 {
     /** @var string */
     private $subject;
-    /** @var string */
+    /** @var string|null */
+    private $templateKey;
+    /** @var string|null */
     private $textContent;
-    /** @var string */
+    /** @var string|null */
     private $htmlContent;
     /** @var string */
     private $recipientEmail;
@@ -22,6 +24,7 @@ class Mail implements \JsonSerializable
     private $senderName;
     /** @var string[] */
     private $cc = [];
+    private $data = [];
 
     /**
      * Message constructor.
@@ -29,32 +32,36 @@ class Mail implements \JsonSerializable
      * @param string $recipientEmail The first recipient email address
      * @param string|null $recipientName The first recipient name
      * @param string $subject The message subject
-     * @param string $textContent
-     * @param string $htmlContent
+     * @param string|null $templateKey
+     * @param string|null $textContent
+     * @param string|null $htmlContent
      * @param string|null $replyTo The email address to use for the Reply-to header
      */
     public final function __construct(
         string $recipientEmail,
         $recipientName,
         string $subject,
-        string $textContent,
-        string $htmlContent,
+        ?string $templateKey,
+        ?string $textContent,
+        ?string $htmlContent,
         $replyTo = null
     ) {
-        $this->subject = $subject;
-        $this->textContent = $textContent;
-        $this->htmlContent = $htmlContent;
         $this->recipientEmail = $recipientEmail;
         $this->recipientName = $recipientName;
+        $this->subject = $subject;
+        $this->templateKey = $templateKey;
+        $this->textContent = $textContent;
+        $this->htmlContent = $htmlContent;
         $this->replyTo = $replyTo;
     }
 
-    public static function fromDeserializedData($data)
+    public static function jsonDeserialize(array $data): self
     {
         $mail = new self(
             $data['toEmail'],
             $data['toName'],
             $data['subject'],
+            $data['templateKey'],
             $data['text'],
             $data['html'],
             $data['replyTo']
@@ -68,21 +75,26 @@ class Mail implements \JsonSerializable
         if ($cc = $data['cc']) {
             $mail->setCc($cc);
         }
+        if ($data = $data['data']) {
+            $mail->setData($data);
+        }
         return $mail;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'toEmail' => $this->getRecipientEmail(),
             'toName' => $this->getRecipientName(),
             'subject' => $this->getSubject(),
+            'templateKey' => $this->getTemplateKey(),
             'text' => $this->getTextContent(),
             'html' => $this->getHtmlContent(),
             'replyTo' => $this->getReplyTo(),
             'senderEmail' => $this->getSenderEmail(),
             'senderName' => $this->getSenderName(),
             'cc' => $this->getReplyTo(),
+            'data' => $this->getData(),
         ];
     }
 
@@ -100,6 +112,22 @@ class Mail implements \JsonSerializable
     public function setSubject(string $subject)
     {
         $this->subject = $subject;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTemplateKey(): ?string
+    {
+        return $this->templateKey;
+    }
+
+    /**
+     * @param null|string $templateKey
+     */
+    public function setTemplateKey(?string $templateKey): void
+    {
+        $this->templateKey = $templateKey;
     }
 
     /**
@@ -229,5 +257,22 @@ class Mail implements \JsonSerializable
     {
         $this->cc = $cc;
     }
+
+    /**
+     * @return array
+     */
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setData(array $data): void
+    {
+        $this->data = $data;
+    }
+
 }
 

@@ -3,54 +3,48 @@
 namespace Beapp\Email\Transport;
 
 use Beapp\Email\Core\Mail;
+use Beapp\Email\Core\MailerException;
 use Beapp\Email\Core\Transport\MailerTransport;
 use Mailgun\Mailgun;
 
 class MailgunTransport implements MailerTransport
 {
 
-    /** @var Mailgun $mailgun */
-    private $mailgun;
+    /** @var string */
+    private $key;
     /** @var string */
     private $domain;
-    /** @var string */
-    private $defaultSenderMail;
-    /** @var string */
-    private $defaultSenderName;
-    /** @var string|null */
-    private $forceToEmail;
+    /** @var Mailgun $mailgun */
+    private $client;
 
     /**
-     * MailgunClient constructor.
      * @param string $key
      * @param string $domain
-     * @param string $defaultSenderMail
-     * @param string $defaultSenderName
-     * @param null $forceToEmail
      */
-    public function __construct(string $key, string $domain, string $defaultSenderMail, string $defaultSenderName, $forceToEmail = null)
+    public function __construct(string $key, string $domain)
     {
-        $this->mailgun = Mailgun::create($key);
-
+        $this->key = $key;
         $this->domain = $domain;
-        $this->defaultSenderMail = $defaultSenderMail;
-        $this->defaultSenderName = $defaultSenderName;
-        $this->forceToEmail = $forceToEmail;
+    }
+
+    protected function getClient(): Mailgun
+    {
+        if (is_null($this->client)) {
+            $this->client = Mailgun::create($this->key);
+        }
+        return $this->client;
     }
 
     /**
+     * Delivers the email to the recipients through a specific channel (direct call to client, publish to AMQP server, etc...)
+     *
      * @param Mail $email
+     * @throws MailerException
      */
     public function sendEmail(Mail $email): void
     {
         $mailParams = [];
         $mailParams['from'] = $email->getSenderEmail();
-
-        // Keep this here (in addition of the one in MailerService) as a fail-safe.
-        // If the "Mailgun Redirect To Email" is given we force the redirection to this email
-        if (!empty($this->forceToEmail)) {
-            $email->setRecipientEmail($this->forceToEmail);
-        }
 
         if ($email->getRecipientName()) {
             $mailParams['to'] = $email->getRecipientName() . ' <' . $email->getRecipientEmail() . '>';
@@ -61,6 +55,10 @@ class MailgunTransport implements MailerTransport
         $mailParams['text'] = $email->getTextContent();
         $mailParams['html'] = $email->getHtmlContent();
 
-        $this->mailgun->messages()->send($this->domain, $mailParams);
+        try {
+            $this->getClient()->messages()->send($this->domain, $mailParams);
+        } catch (\Exception $e) {
+            throw new MailerException("Couldn't send mail through Mailgun", 0, $e);
+        }
     }
 }
