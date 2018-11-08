@@ -3,6 +3,7 @@
     "description": "Mailer library for Symfony project",
     "type": "library",
     "license": "MIT",
+    "version": "0.1.0",
     "keywords": [
         "mail",
         "email",
@@ -28,7 +29,10 @@
     },
     "replace": {
         "beapp/mailer-core": "self.version",
-        "beapp/mailer-client-mailgun": "self.version"
+        "beapp/mailer-transport-mailgun": "self.version",
+        "beapp/mailer-transport-mandrill": "self.version",
+        "beapp/mailer-transport-beanstalk": "self.version",
+        "beapp/mailer-transport-rabbitmq": "self.version"
     },
     "autoload": {
         "psr-4": {
