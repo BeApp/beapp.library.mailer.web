@@ -10,33 +10,29 @@ use Mailgun\Mailgun;
 class MailgunTransport implements MailerTransport
 {
 
-    /** @var Mailgun $mailgun */
-    private $mailgun;
+    /** @var string */
+    private $key;
     /** @var string */
     private $domain;
-    /** @var string */
-    private $defaultSenderMail;
-    /** @var string */
-    private $defaultSenderName;
-    /** @var string|null */
-    private $forceToEmail;
+    /** @var Mailgun $mailgun */
+    private $client;
 
     /**
-     * MailgunClient constructor.
      * @param string $key
      * @param string $domain
-     * @param string $defaultSenderMail
-     * @param string $defaultSenderName
-     * @param null $forceToEmail
      */
-    public function __construct(string $key, string $domain, string $defaultSenderMail, string $defaultSenderName, $forceToEmail = null)
+    public function __construct(string $key, string $domain)
     {
-        $this->mailgun = Mailgun::create($key);
-
+        $this->key = $key;
         $this->domain = $domain;
-        $this->defaultSenderMail = $defaultSenderMail;
-        $this->defaultSenderName = $defaultSenderName;
-        $this->forceToEmail = $forceToEmail;
+    }
+
+    protected function getClient(): Mailgun
+    {
+        if (is_null($this->client)) {
+            $this->client = Mailgun::create($this->key);
+        }
+        return $this->client;
     }
 
     /**
@@ -50,12 +46,6 @@ class MailgunTransport implements MailerTransport
         $mailParams = [];
         $mailParams['from'] = $email->getSenderEmail();
 
-        // Keep this here (in addition of the one in MailerService) as a fail-safe.
-        // If the "Mailgun Redirect To Email" is given we force the redirection to this email
-        if (!empty($this->forceToEmail)) {
-            $email->setRecipientEmail($this->forceToEmail);
-        }
-
         if ($email->getRecipientName()) {
             $mailParams['to'] = $email->getRecipientName() . ' <' . $email->getRecipientEmail() . '>';
         } else {
@@ -66,7 +56,7 @@ class MailgunTransport implements MailerTransport
         $mailParams['html'] = $email->getHtmlContent();
 
         try {
-            $this->mailgun->messages()->send($this->domain, $mailParams);
+            $this->getClient()->messages()->send($this->domain, $mailParams);
         } catch (\Exception $e) {
             throw new MailerException("Couldn't send mail through Mailgun", 0, $e);
         }
