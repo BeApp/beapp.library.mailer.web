@@ -16,6 +16,7 @@
         "mailgun/mailgun-php": "^2.3",
         "mandrill/mandrill": "^1.0",
         "pda/pheanstalk": "^3.2",
+        "php-amqplib/rabbitmq-bundle": "^1.14",
         "symfony/translation": "4.*",
         "symfony/templating": "4.*",
         "symfony/routing": "4.*"
