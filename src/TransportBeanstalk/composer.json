@@ -3,6 +3,12 @@
     "description": "Beanstalk transport for Mailer library",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "mail",
+        "email",
+        "symfony",
+        "beanstalkd"
+    ],
     "authors": [
         {
             "name": "Damien Villeneuve",

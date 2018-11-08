@@ -3,6 +3,11 @@
     "description": "Core mailer library",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "mail",
+        "email",
+        "symfony"
+    ],
     "authors": [
         {
             "name": "Damien Villeneuve",

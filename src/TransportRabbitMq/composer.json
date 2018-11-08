@@ -3,6 +3,12 @@
     "description": "RabbitMq transport for Mailer library",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "mail",
+        "email",
+        "symfony",
+        "rabbitmq"
+    ],
     "authors": [
         {
             "name": "Damien Villeneuve",

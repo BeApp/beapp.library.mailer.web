@@ -3,6 +3,12 @@
     "description": "Mandrill transport for Mailer library",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "mail",
+        "email",
+        "symfony",
+        "mandrill"
+    ],
     "authors": [
         {
             "name": "Damien Villeneuve",

@@ -3,6 +3,12 @@
     "description": "Mailgun transport for Mailer library",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "mail",
+        "email",
+        "symfony",
+        "mailgun"
+    ],
     "authors": [
         {
             "name": "Damien Villeneuve",
