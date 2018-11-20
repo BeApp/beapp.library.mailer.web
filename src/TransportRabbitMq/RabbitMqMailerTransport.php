@@ -33,11 +33,14 @@ class RabbitMqMailerTransport implements MailerTransport
     public function sendEmail(Mail $email): void
     {
         try {
-            $payload = json_encode($email);
-
-            $this->producer->publish($payload, $this->routingKey);
+            $this->producer->publish($this->preparePayload($email), $this->routingKey);
         } catch (\Exception $e) {
             throw new MailerException("Couldn't send mail through RabbitMq", 0, $e);
         }
+    }
+
+    protected function preparePayload(Mail $email): string
+    {
+        return json_encode($email);
     }
 }
