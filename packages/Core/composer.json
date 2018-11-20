@@ -1,14 +1,13 @@
 {
-    "name": "beapp/mailer-transport-mandrill",
-    "description": "Mandrill transport for Mailer library",
+    "name": "beapp/mailer-core",
+    "description": "Core mailer library",
     "type": "library",
     "license": "MIT",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "keywords": [
         "mail",
         "email",
-        "symfony",
-        "mandrill"
+        "symfony"
     ],
     "authors": [
         {
@@ -18,12 +17,15 @@
     ],
     "require": {
         "php": ">=7.1",
-        "beapp/mailer-core": "0.1.*",
-        "mandrill/mandrill": "^1.0"
+        "ext-json": "*",
+        "psr/log": "1.0.2",
+        "symfony/translation": "4.*",
+        "symfony/templating": "4.*",
+        "symfony/routing": "4.*"
     },
     "autoload": {
         "psr-4": {
-            "Beapp\\Email\\Transport\\": ""
+            "Beapp\\Email\\Core\\": ""
         }
     }
 }

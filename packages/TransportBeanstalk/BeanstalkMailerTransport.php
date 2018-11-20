@@ -1,6 +1,6 @@
 <?php
 
-namespace Beapp\Email\Transport;
+namespace Beapp\Email\Transport\Beanstalk;
 
 use Beapp\Email\Core\Mail;
 use Beapp\Email\Core\MailerException;
@@ -61,13 +61,16 @@ class BeanstalkMailerTransport implements MailerTransport
     public function sendEmail(Mail $email): void
     {
         try {
-            $payload = json_encode($email);
-
             $this->getClient()
                 ->useTube($this->tube)
-                ->put($payload, $this->priority, $this->delay, $this->ttr);
+                ->put($this->preparePayload($email), $this->priority, $this->delay, $this->ttr);
         } catch (\Exception $e) {
             throw new MailerException("Couldn't send mail through Beanstalk", 0, $e);
         }
+    }
+
+    protected function preparePayload(Mail $email): string
+    {
+        return json_encode($email);
     }
 }
