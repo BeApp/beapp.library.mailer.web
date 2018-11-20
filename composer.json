@@ -1,14 +1,14 @@
 {
     "name": "beapp/mailer",
-    "description": "Mailer library for Symfony project",
-    "type": "library",
-    "license": "MIT",
     "version": "0.1.0",
+    "type": "library",
+    "description": "Mailer library for Symfony project",
     "keywords": [
         "mail",
         "email",
         "symfony"
     ],
+    "license": "MIT",
     "authors": [
         {
             "name": "Damien Villeneuve",
@@ -17,15 +17,28 @@
     ],
     "require": {
         "php": ">=7.1",
-        "psr/log": "1.0.2",
-        "ext-json": "*",
         "mailgun/mailgun-php": "^2.3",
-        "mandrill/mandrill": "^1.0",
-        "pda/pheanstalk": "^3.2",
-        "php-amqplib/rabbitmq-bundle": "^1.14",
+        "ext-json": "*",
+        "psr/log": "1.0.2",
         "symfony/translation": "4.*",
         "symfony/templating": "4.*",
-        "symfony/routing": "4.*"
+        "symfony/routing": "4.*",
+        "php-amqplib/rabbitmq-bundle": "^1.14",
+        "mandrill/mandrill": "^1.0",
+        "pda/pheanstalk": "^3.2"
+    },
+    "require-dev": {
+        "symplify/monorepo-builder": "^4.7",
+        "phpunit/phpunit": "^7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Beapp\\Email\\Core\\": "packages/Core/",
+            "Beapp\\Email\\Transport\\Beanstalk\\": "packages/TransportBeanstalk/",
+            "Beapp\\Email\\Transport\\Mailgun\\": "packages/TransportMailgun/",
+            "Beapp\\Email\\Transport\\Mandrill\\": "packages/TransportMandrill/",
+            "Beapp\\Email\\Transport\\Rabbitmq\\": "packages/TransportRabbitMq/"
+        }
     },
     "replace": {
         "beapp/mailer-core": "self.version",
@@ -33,11 +46,6 @@
         "beapp/mailer-transport-mandrill": "self.version",
         "beapp/mailer-transport-beanstalk": "self.version",
         "beapp/mailer-transport-rabbitmq": "self.version"
-    },
-    "autoload": {
-        "psr-4": {
-            "Beapp\\Email\\": "src"
-        }
     },
     "extra": {
         "branch-alias": {

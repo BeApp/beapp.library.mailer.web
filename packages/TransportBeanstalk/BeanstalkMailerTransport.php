@@ -1,6 +1,6 @@
 <?php
 
-namespace Beapp\Email\Transport;
+namespace Beapp\Email\Transport\Beanstalk;
 
 use Beapp\Email\Core\Mail;
 use Beapp\Email\Core\MailerException;
