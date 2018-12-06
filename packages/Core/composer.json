@@ -18,10 +18,10 @@
     "require": {
         "php": ">=7.1",
         "ext-json": "*",
-        "psr/log": "1.0.2",
-        "symfony/translation": "4.*",
-        "symfony/templating": "4.*",
-        "symfony/routing": "4.*"
+        "psr/log": "^1.0",
+        "symfony/translation": "3.*||4.*",
+        "symfony/templating": "3.*||4.*",
+        "symfony/routing": "3.*||4.*"
     },
     "autoload": {
         "psr-4": {
