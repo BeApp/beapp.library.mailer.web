@@ -2,30 +2,35 @@
     "name": "beapp/mailer",
     "version": "0.1.1",
     "type": "library",
-    "description": "Mailer library for Symfony project",
     "keywords": [
         "mail",
         "email",
         "symfony"
     ],
-    "license": "MIT",
     "authors": [
         {
             "name": "Damien Villeneuve",
             "email": "d.villeneuve@beapp.fr"
         }
     ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "description": "Mailer library for Symfony project",
+    "license": "MIT",
     "require": {
         "php": ">=7.1",
+        "php-amqplib/rabbitmq-bundle": "^1.14",
+        "mandrill/mandrill": "^1.0",
         "mailgun/mailgun-php": "^2.3",
+        "pda/pheanstalk": "^3.2",
         "ext-json": "*",
         "psr/log": "^1.0",
         "symfony/translation": "3.*||4.*",
         "symfony/templating": "3.*||4.*",
-        "symfony/routing": "3.*||4.*",
-        "php-amqplib/rabbitmq-bundle": "^1.14",
-        "mandrill/mandrill": "^1.0",
-        "pda/pheanstalk": "^3.2"
+        "symfony/routing": "3.*||4.*"
     },
     "require-dev": {
         "symplify/monorepo-builder": "^4.7",
@@ -33,11 +38,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Beapp\\Email\\Core\\": "packages/Core/",
-            "Beapp\\Email\\Transport\\Beanstalk\\": "packages/TransportBeanstalk/",
-            "Beapp\\Email\\Transport\\Mailgun\\": "packages/TransportMailgun/",
-            "Beapp\\Email\\Transport\\Mandrill\\": "packages/TransportMandrill/",
-            "Beapp\\Email\\Transport\\Rabbitmq\\": "packages/TransportRabbitMq/"
+            "Beapp\\Email\\Core\\": "packages\\Core\\",
+            "Beapp\\Email\\Transport\\Beanstalk\\": "packages\\TransportBeanstalk\\",
+            "Beapp\\Email\\Transport\\Mailgun\\": "packages\\TransportMailgun\\",
+            "Beapp\\Email\\Transport\\Mandrill\\": "packages\\TransportMandrill\\",
+            "Beapp\\Email\\Transport\\Rabbitmq\\": "packages\\TransportRabbitMq\\"
         }
     },
     "replace": {
@@ -46,10 +51,5 @@
         "beapp/mailer-transport-mandrill": "self.version",
         "beapp/mailer-transport-beanstalk": "self.version",
         "beapp/mailer-transport-rabbitmq": "self.version"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
     }
 }
