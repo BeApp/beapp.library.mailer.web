@@ -3,10 +3,10 @@
 namespace Beapp\Email\Core;
 
 use Beapp\Email\Core\Template\MailTemplate;
+use Beapp\Email\Core\Translation\TranslationInterface;
 use Beapp\Email\Core\Transport\MailerTransport;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class MailerService
@@ -21,7 +21,7 @@ class MailerService
     /** @var RouterInterface $router */
     private $router;
 
-    /** @var TranslatorInterface $translator */
+    /** @var TranslationInterface $translator */
     private $translator;
 
     /** @var EngineInterface $templating */
@@ -37,7 +37,7 @@ class MailerService
      * MailerService constructor.
      * @param MailerTransport $mailerTransport
      * @param RouterInterface $router
-     * @param TranslatorInterface $translator
+     * @param TranslationInterface $translator
      * @param EngineInterface $templating
      * @param string $defaultSenderMail
      * @param string $defaultSenderName
@@ -45,7 +45,7 @@ class MailerService
     public function __construct(
         MailerTransport $mailerTransport,
         RouterInterface $router,
-        TranslatorInterface $translator,
+        TranslationInterface $translator,
         EngineInterface $templating,
         string $defaultSenderMail,
         string $defaultSenderName

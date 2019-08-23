@@ -3,9 +3,9 @@
 namespace Beapp\Email\Core\Template;
 
 use Beapp\Email\Core\Mail;
+use Beapp\Email\Core\Translation\TranslationInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Interface MailTemplate defines the email to send
@@ -17,9 +17,9 @@ interface MailTemplate
      * Call by {@link MailService} to build a {@link Mail} instance.
      *
      * @param RouterInterface $router
-     * @param TranslatorInterface $translator
+     * @param TranslationInterface $translator
      * @param EngineInterface $templating
      * @return Mail
      */
-    public function build(RouterInterface $router, TranslatorInterface $translator, EngineInterface $templating): Mail;
+    public function build(RouterInterface $router, TranslationInterface $translator, EngineInterface $templating): Mail;
 }
