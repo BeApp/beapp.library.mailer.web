@@ -2,11 +2,9 @@
 
 namespace Beapp\Email\Core;
 
+use Beapp\Email\Core\Context\MailContextFactory;
 use Beapp\Email\Core\Template\MailTemplate;
-use Beapp\Email\Core\Translation\TranslationInterface;
 use Beapp\Email\Core\Transport\MailerTransport;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Templating\EngineInterface;
 
 /**
  * Class MailerService
@@ -18,14 +16,8 @@ class MailerService
     /** @var MailerTransport $mailerTransport */
     private $mailerTransport;
 
-    /** @var RouterInterface $router */
-    private $router;
-
-    /** @var TranslationInterface $translator */
-    private $translator;
-
-    /** @var EngineInterface $templating */
-    private $templating;
+    /** @var MailContextFactory */
+    private $mailContextFactory;
 
     /** @var string $defaultSenderMail */
     private $defaultSenderMail;
@@ -36,25 +28,19 @@ class MailerService
     /**
      * MailerService constructor.
      * @param MailerTransport $mailerTransport
-     * @param RouterInterface $router
-     * @param TranslationInterface $translator
-     * @param EngineInterface $templating
+     * @param MailContextFactory $mailContextFactory
      * @param string $defaultSenderMail
      * @param string $defaultSenderName
      */
     public function __construct(
         MailerTransport $mailerTransport,
-        RouterInterface $router,
-        TranslationInterface $translator,
-        EngineInterface $templating,
+        MailContextFactory $mailContextFactory,
         string $defaultSenderMail,
         string $defaultSenderName
-    ) {
+    )
+    {
         $this->mailerTransport = $mailerTransport;
-        $this->router = $router;
-        $this->translator = $translator;
-        $this->templating = $templating;
-
+        $this->mailContextFactory = $mailContextFactory;
         $this->defaultSenderMail = $defaultSenderMail;
         $this->defaultSenderName = $defaultSenderName;
     }
@@ -68,7 +54,8 @@ class MailerService
      */
     public function sendMail(MailTemplate $mailTemplate)
     {
-        $mail = $mailTemplate->build($this->router, $this->translator, $this->templating);
+        $mail = $mailTemplate->build($this->mailContextFactory->buildContext());
+
         if (!$mail->getSenderEmail()) {
             $mail->setSenderEmail($this->defaultSenderMail);
             $mail->setSenderName($this->defaultSenderName);
