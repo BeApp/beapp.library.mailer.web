@@ -27,5 +27,11 @@
         "psr-4": {
             "Beapp\\Email\\Core\\": ""
         }
+    },
+    "suggest": {
+        "beapp/mailer-transport-mailgun": "Send mails directly through Mailgun API",
+        "beapp/mailer-transport-mandrill": "Send mails directly through Mandrill API",
+        "beapp/mailer-transport-beanstalk": "Send mails information into a Beanstalk queue to be processed by a dedicated worker",
+        "beapp/mailer-transport-rabbitmq": "Send mails information into a RabbitMq queue to be processed by a dedicated worker"
     }
 }
