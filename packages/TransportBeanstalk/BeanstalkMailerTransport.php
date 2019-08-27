@@ -12,8 +12,11 @@ class BeanstalkMailerTransport implements MailerTransport
 {
     /** @var Pheanstalk */
     private $client;
+
     /** @var string */
     private $beanstakdHost;
+    /** @var int */
+    private $beanstalkPort;
     /** @var string */
     private $tube;
     /** @var int */
@@ -25,6 +28,7 @@ class BeanstalkMailerTransport implements MailerTransport
 
     /**
      * @param string $beanstalkHost
+     * @param int $beanstalkPort
      * @param string $tube
      * @param int $priority
      * @param int $delay
@@ -32,12 +36,14 @@ class BeanstalkMailerTransport implements MailerTransport
      */
     public function __construct(
         string $beanstalkHost,
+        int $beanstalkPort,
         string $tube,
         $priority = PheanstalkInterface::DEFAULT_PRIORITY,
         $delay = PheanstalkInterface::DEFAULT_DELAY,
         $ttr = PheanstalkInterface::DEFAULT_TTR
     ) {
         $this->beanstakdHost = $beanstalkHost;
+        $this->beanstalkPort = $beanstalkPort;
         $this->tube = $tube;
         $this->priority = $priority;
         $this->delay = $delay;
@@ -47,7 +53,7 @@ class BeanstalkMailerTransport implements MailerTransport
     protected function getClient()
     {
         if (is_null($this->client)) {
-            $this->client = new Pheanstalk($this->beanstakdHost);
+            $this->client = new Pheanstalk($this->beanstakdHost, $this->beanstalkPort);
         }
         return $this->client;
     }
