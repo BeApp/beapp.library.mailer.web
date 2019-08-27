@@ -22,15 +22,15 @@
     "license": "MIT",
     "require": {
         "php": ">=7.1",
-        "php-amqplib/rabbitmq-bundle": "^1.14",
-        "mandrill/mandrill": "^1.0",
         "mailgun/mailgun-php": "^2.3",
-        "pda/pheanstalk": "^3.2",
         "ext-json": "*",
         "psr/log": "^1.0",
         "symfony/translation": "3.*||4.*",
         "symfony/templating": "3.*||4.*",
-        "symfony/routing": "3.*||4.*"
+        "symfony/routing": "3.*||4.*",
+        "php-amqplib/rabbitmq-bundle": "^1.14",
+        "mandrill/mandrill": "^1.0",
+        "pda/pheanstalk": "^3.2"
     },
     "require-dev": {
         "symplify/monorepo-builder": "^4.7",
