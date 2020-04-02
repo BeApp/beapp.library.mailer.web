@@ -2,6 +2,8 @@
 
 namespace Beapp\Email\Core;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 class Mail implements \JsonSerializable
 {
     /** @var string */
@@ -25,6 +27,8 @@ class Mail implements \JsonSerializable
     /** @var string[] */
     private $cc = [];
     private $data = [];
+    /** @var File[] */
+    private $attachments = [];
 
     /**
      * Message constructor.
@@ -45,7 +49,8 @@ class Mail implements \JsonSerializable
         ?string $textContent,
         ?string $htmlContent,
         $replyTo = null
-    ) {
+    )
+    {
         $this->recipientEmail = $recipientEmail;
         $this->recipientName = $recipientName;
         $this->subject = $subject;
@@ -78,6 +83,14 @@ class Mail implements \JsonSerializable
         if ($data = $data['data']) {
             $mail->setData($data);
         }
+        if (!empty($data['attachments'])) {
+            $attachments = array_map(function (array $file) {
+                return new File($file['filepath']);
+            }, $data['attachments']);
+
+            $mail->setAttachments($attachments);
+        }
+
         return $mail;
     }
 
@@ -95,6 +108,13 @@ class Mail implements \JsonSerializable
             'senderName' => $this->getSenderName(),
             'cc' => $this->getReplyTo(),
             'data' => $this->getData(),
+            'attachments' => array_map(function (File $attachment) {
+                return [
+                    'filename' => $attachment->getFilename(),
+                    'filepath' => $attachment->getPath(),
+                    'type' => $attachment->getMimeType()
+                ];
+            }, $this->getAttachments()),
         ];
     }
 
@@ -272,6 +292,24 @@ class Mail implements \JsonSerializable
     public function setData(array $data): void
     {
         $this->data = $data;
+    }
+
+    /**
+     * @param File[] $attachments
+     * @return Mail
+     */
+    public function setAttachments(array $attachments): Mail
+    {
+        $this->attachments = $attachments;
+        return $this;
+    }
+
+    /**
+     * @return File[]
+     */
+    public function getAttachments(): array
+    {
+        return $this->attachments;
     }
 
 }
