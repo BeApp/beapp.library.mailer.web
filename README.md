@@ -97,3 +97,15 @@ Send the email from your code.
 ```
 $mailerService->sendMail(new AccountValidationMailTemplate('client@myapp.com', 'Client', 'activation-token'));
 ```
+
+### Add an attachment to your mail 
+
+ To send files with your mail, just set an array of `Symfony\Component\HttpFoundation\File\File` like this : 
+ 
+```
+$mail = new Mail();
+
+$attachment = [new File('somefilepath')];
+
+$mail->setAttachments($attachment);
+```

@@ -5,6 +5,7 @@ namespace Beapp\Email\Transport\Mandrill;
 use Beapp\Email\Core\Mail;
 use Beapp\Email\Core\MailerException;
 use Beapp\Email\Core\Transport\MailerTransport;
+use Symfony\Component\HttpFoundation\File\File;
 
 class MandrillMailerTransport implements MailerTransport
 {
@@ -69,10 +70,30 @@ class MandrillMailerTransport implements MailerTransport
                 ],
                 'headers' => ['Reply-To' => !empty($email->getReplyTo()) ? $email->getReplyTo() : $ret['from_email']],
             );
+
+            if (!empty($email->getAttachments())) {
+                $message['attachments'] = $this->prepareAttachments($email->getAttachments());
+            }
+
             /** @noinspection PhpParamsInspection */
             $this->getClient()->messages->send($message, true, $this->ipPool);
         } catch (\Exception $e) {
             throw new MailerException("Couldn't send mail through Mandrill", 0, $e);
         }
+    }
+
+    /**
+     * @param File[] $attachments
+     * @return array
+     */
+    protected function prepareAttachments(array $attachments): array
+    {
+        return array_map(function (File $attachment) {
+            return [
+                'type' => $attachment->getMimeType(),
+                'name' => $attachment->getFilename(),
+                'content' => file_get_contents($attachment->getPath()),
+            ];
+        }, $attachments);
     }
 }
