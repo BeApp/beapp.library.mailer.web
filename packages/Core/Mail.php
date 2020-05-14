@@ -111,7 +111,7 @@ class Mail implements \JsonSerializable
             'attachments' => array_map(function (File $attachment) {
                 return [
                     'filename' => $attachment->getFilename(),
-                    'filepath' => $attachment->getPath(),
+                    'filepath' => $attachment->getRealPath(),
                     'type' => $attachment->getMimeType()
                 ];
             }, $this->getAttachments()),
