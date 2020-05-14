@@ -92,7 +92,7 @@ class MandrillMailerTransport implements MailerTransport
             return [
                 'type' => $attachment->getMimeType(),
                 'name' => $attachment->getFilename(),
-                'content' => file_get_contents($attachment->getPath()),
+                'content' => file_get_contents($attachment->getRealPath()),
             ];
         }, $attachments);
     }

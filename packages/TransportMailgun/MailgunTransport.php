@@ -76,7 +76,7 @@ class MailgunTransport implements MailerTransport
         $attachments = [];
 
         foreach ($files as $attachment) {
-            $attachments[] = ['filePath' => $attachment->getPath()];
+            $attachments[] = ['filePath' => $attachment->getRealPath()];
         }
 
         return $attachments;
