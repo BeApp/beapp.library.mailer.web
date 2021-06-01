@@ -64,4 +64,21 @@ class MailerService
         $this->mailerTransport->sendEmail($mail);
     }
 
+    /**
+     * Build a {@link Mail} instance from the given {@link MailTemplate} and dispatch it to the configured {@link MailerTransport}.
+     * The {@link MailerTransport} offers an abstraction to send bulk emails thought different channel.
+     *
+     * @param MailTemplate $mailTemplate
+     */
+    public function sendBulkMail(MailTemplate $mailTemplate)
+    {
+        $mail = $mailTemplate->build($this->mailContextFactory->buildContext());
+
+        if (!$mail->getSenderEmail()) {
+            $mail->setSenderEmail($this->defaultSenderMail);
+            $mail->setSenderName($this->defaultSenderName);
+        }
+
+        $this->mailerTransport->sendBulkEmail($mail);
+    }
 }

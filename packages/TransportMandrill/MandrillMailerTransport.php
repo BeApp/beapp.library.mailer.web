@@ -83,6 +83,43 @@ class MandrillMailerTransport implements MailerTransport
     }
 
     /**
+     * Delivers bulk email
+     *
+     * @throws MailerException
+     */
+    public function sendBulkEmail(Mail $email): void
+    {
+        $recipients = [];
+        foreach($email->getData() as $item)
+        {
+            $recipients [] = [
+                'email' => $item,
+                'type' => 'to',
+            ];
+        }
+        try {
+            $html = $email->getHtmlContent();
+            $text = $email->getTextContent();
+            $message = [
+                'html' => $html,
+                'text' => $text,
+                'subject' => $email->getSubject(),
+                'from_email' => $email->getSenderEmail(),
+                'from_name' => $email->getSenderName(),
+                'to' => $recipients,
+                'headers' => ['Reply-To' => "beapp.support@blynd.com"],
+            ];
+
+            $this->getClient()->setApiKey($this->apiKey);
+            $this->getClient()->messages->send([
+                "message" => $message
+            ]);
+        } catch (Exception $e) {
+            throw new MailerException("Couldn't send bulk mail through Mandrill", 0, $e);
+        }
+    }
+
+    /**
      * @param File[] $attachments
      * @return array
      */

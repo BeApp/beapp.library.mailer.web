@@ -18,4 +18,6 @@ interface MailerTransport
      * @throws MailerException
      */
     public function sendEmail(Mail $email): void;
+
+    public function sendBulkEmail(Mail $email): void;
 }
