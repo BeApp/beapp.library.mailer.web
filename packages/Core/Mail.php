@@ -29,6 +29,8 @@ class Mail implements \JsonSerializable
     private $data = [];
     /** @var File[] */
     private $attachments = [];
+    /** @var array|null */
+    private $bulkRecipients;
 
     /**
      * Message constructor.
@@ -40,15 +42,17 @@ class Mail implements \JsonSerializable
      * @param string|null $textContent
      * @param string|null $htmlContent
      * @param string|null $replyTo The email address to use for the Reply-to header
+     * @param array|null $bulkRecipients
      */
     public final function __construct(
         string $recipientEmail,
-        $recipientName,
+        ?string $recipientName,
         string $subject,
         ?string $templateKey,
         ?string $textContent,
         ?string $htmlContent,
-        $replyTo = null
+        ?string $replyTo = null,
+        ?array $bulkRecipients = null
     )
     {
         $this->recipientEmail = $recipientEmail;
@@ -58,6 +62,7 @@ class Mail implements \JsonSerializable
         $this->textContent = $textContent;
         $this->htmlContent = $htmlContent;
         $this->replyTo = $replyTo;
+        $this->bulkRecipients = $bulkRecipients;
     }
 
     public static function jsonDeserialize(array $data): self
@@ -69,7 +74,8 @@ class Mail implements \JsonSerializable
             $data['templateKey'],
             $data['text'],
             $data['html'],
-            $data['replyTo']
+            $data['replyTo'],
+            $data['bulkRecipients']
         );
         if ($senderEmail = $data['senderEmail']) {
             $mail->setSenderEmail($senderEmail);
@@ -115,6 +121,7 @@ class Mail implements \JsonSerializable
                     'type' => $attachment->getMimeType()
                 ];
             }, $this->getAttachments()),
+            'bulkRecipients' => $this->getBulkRecipients()
         ];
     }
 
@@ -310,6 +317,22 @@ class Mail implements \JsonSerializable
     public function getAttachments(): array
     {
         return $this->attachments;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getBulkRecipients(): ?array
+    {
+        return $this->bulkRecipients;
+    }
+
+    /**
+     * @param array|null $bulkRecipients
+     */
+    public function setBulkRecipients(?array $bulkRecipients): void
+    {
+        $this->bulkRecipients = $bulkRecipients;
     }
 
 }
