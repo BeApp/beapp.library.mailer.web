@@ -6,21 +6,23 @@ use Beapp\Email\Core\Mail;
 use Beapp\Email\Core\MailerException;
 use Beapp\Email\Core\Transport\MailerTransport;
 use Symfony\Component\HttpFoundation\File\File;
+use MailchimpTransactional\ApiClient as Mandrill;
+use Exception;
 
 class MandrillMailerTransport implements MailerTransport
 {
-    /** @var \Mandrill|null */
+    /** @var Mandrill|null */
     private $client;
     /** @var string */
     private $apiKey;
-    /** @var string */
+    /** @deprecated @var string|null */
     private $ipPool;
 
     /**
      * @param string $apiKey
-     * @param string $ipPool
+     * @param string|null $ipPool
      */
-    public function __construct(string $apiKey, string $ipPool)
+    public function __construct(string $apiKey, ?string $ipPool)
     {
         $this->apiKey = $apiKey;
         $this->ipPool = $ipPool;
@@ -29,12 +31,12 @@ class MandrillMailerTransport implements MailerTransport
     /**
      * @throws MailerException
      */
-    protected function getClient()
+    protected function getClient(): ?Mandrill
     {
         if (is_null($this->client)) {
             try {
-                $this->client = new \Mandrill($this->apiKey);
-            } catch (\Mandrill_Error $e) {
+                $this->client = new Mandrill();
+            } catch (Exception $e) {
                 throw new MailerException("Couldn't initialize Mandrill transport", 0, $e);
             }
         }
@@ -50,33 +52,60 @@ class MandrillMailerTransport implements MailerTransport
     public function sendEmail(Mail $email): void
     {
         try {
-            $ret = $this->getClient()->templates->info($email->getTemplateKey());
+            if(!is_null($email->getTemplateKey())){
+                $ret = $this->getClient()->templates->info($email->getTemplateKey());
+                $html = $ret['publish_code'];
+                $text = $ret['publish_text'];
+                foreach ($email->getData() as $key => $val) {
+                    $html = str_replace($key, $val, $html);
+                    $text = str_replace($key, $val, $text);
+                }
+                $toEmail = $ret['toEmail'];
+                $subject = $ret['subject'];
+                $fromEmail = $ret['from_email'];
+                $fromName = $ret['from_name'];
+            } else{
+                $html = $email->getHtmlContent();
+                $text = $email->getTextContent();
+                $toEmail = $email->getRecipientEmail();
+                $subject = $email->getSubject();
+                $fromEmail = $email->getSenderEmail();
+                $fromName = $email->getSenderName();
+            }
 
-            $html = $ret['publish_code'];
-            $text = $ret['publish_text'];
-            foreach ($email->getData() as $key => $val) {
-                $html = str_replace($key, $val, $html);
-                $text = str_replace($key, $val, $text);
+            if(!is_null($email->getBulkRecipients())){
+                $recipients = [];
+                foreach($email->getBulkRecipients() as $item)
+                {
+                    $recipients [] = [
+                        'email' => $item,
+                        'type' => 'to',
+                    ];
+                }
+            }elseif(!is_null($toEmail)){
+                $recipients =  [['email' => $toEmail, 'type' => 'to']];
+            }
+            else{
+                throw new Exception("Missing recipient", 0);
             }
 
             $message = array(
                 'html' => $html,
                 'text' => $text,
-                'subject' => !empty($email->getSubject()) ? $email->getSubject() : $ret['subject'],
-                'from_email' => !empty($email->getSenderEmail()) ? $email->getSenderEmail() : $ret['from_email'],
-                'from_name' => !empty($email->getSenderName()) ? $email->getSenderName() : $ret['from_name'],
-                'to' => [
-                    ['email' => $email->getRecipientEmail(), 'type' => 'to']
-                ],
-                'headers' => ['Reply-To' => !empty($email->getReplyTo()) ? $email->getReplyTo() : $ret['from_email']],
+                'subject' => $subject,
+                'from_email' => $fromEmail,
+                'from_name' => $fromName,
+                'to' => $recipients,
+                'headers' => ['Reply-To' => $fromEmail],
             );
 
             if (!empty($email->getAttachments())) {
                 $message['attachments'] = $this->prepareAttachments($email->getAttachments());
             }
-
-            /** @noinspection PhpParamsInspection */
-            $this->getClient()->messages->send($message, true, $this->ipPool);
+            $this->getClient()->setApiKey($this->apiKey);
+            $this->getClient()->messages->send([
+                "message" => $message
+            ]);
         } catch (\Exception $e) {
             throw new MailerException("Couldn't send mail through Mandrill", 0, $e);
         }

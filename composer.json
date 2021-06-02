@@ -29,8 +29,8 @@
         "symfony/templating": "3.*||4.*",
         "symfony/routing": "3.*||4.*",
         "php-amqplib/rabbitmq-bundle": "^1.14",
-        "mandrill/mandrill": "^1.0",
-        "pda/pheanstalk": "^3.2"
+        "pda/pheanstalk": "^3.2",
+        "mailchimp/transactional": "^1.0"
     },
     "require-dev": {
         "symplify/monorepo-builder": "^4.7",
