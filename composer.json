@@ -21,7 +21,7 @@
     "description": "Mailer library for Symfony project",
     "license": "MIT",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2",
         "mailgun/mailgun-php": "^2.3",
         "ext-json": "*",
         "psr/log": "^1.0",
