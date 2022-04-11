@@ -74,7 +74,7 @@ class AccountValidationMailTemplate implements MailTemplate
         $this->token = $token;
     }
 
-    public function build(RouterInterface $router, TranslatorInterface $translator, EngineInterface $templating): Mail
+    public function build(RouterInterface $router, TranslatorInterface $translator, Environment $templating): Mail
     {
         $url = $router->generate('account_validate', ['token' => $this->token], UrlGeneratorInterface::ABSOLUTE_URL);
 

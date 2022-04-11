@@ -3,7 +3,7 @@
     "description": "RabbitMq transport for Mailer library",
     "type": "library",
     "license": "MIT",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "keywords": [
         "mail",
         "email",
@@ -17,8 +17,8 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
-        "beapp/mailer-core": "1.1.2",
+        "php": ">=7.2",
+        "beapp/mailer-core": "1.2.0",
         "php-amqplib/rabbitmq-bundle": "^1.14"
     },
     "extra": {

@@ -4,7 +4,7 @@ namespace Beapp\Email\Core\Context;
 
 use Beapp\Email\Core\Translation\TranslationInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class DefaultMailContextFactory implements MailContextFactory
 {
@@ -15,19 +15,19 @@ class DefaultMailContextFactory implements MailContextFactory
     /** @var TranslationInterface $translator */
     private $translator;
 
-    /** @var EngineInterface $templating */
+    /** @var Environment $templating */
     private $templating;
 
     /**
      * MailerService constructor.
      * @param RouterInterface $router
      * @param TranslationInterface $translator
-     * @param EngineInterface $templating
+     * @param Environment $templating
      */
     public function __construct(
         RouterInterface $router,
         TranslationInterface $translator,
-        EngineInterface $templating
+        Environment $templating
     )
     {
         $this->router = $router;

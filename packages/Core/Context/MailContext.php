@@ -4,7 +4,7 @@ namespace Beapp\Email\Core\Context;
 
 use Beapp\Email\Core\Translation\TranslationInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 
 class MailContext
 {
@@ -15,15 +15,15 @@ class MailContext
     /** @var TranslationInterface $translator */
     private $translator;
 
-    /** @var EngineInterface $templating */
+    /** @var Environment $templating */
     private $templating;
 
     /**
      * @param RouterInterface $router
      * @param TranslationInterface $translator
-     * @param EngineInterface $templating
+     * @param Environment $templating
      */
-    public function __construct(RouterInterface $router, TranslationInterface $translator, EngineInterface $templating)
+    public function __construct(RouterInterface $router, TranslationInterface $translator, Environment $templating)
     {
         $this->router = $router;
         $this->translator = $translator;
@@ -39,9 +39,9 @@ class MailContext
     }
 
     /**
-     * @return EngineInterface
+     * @return Environment
      */
-    public function getTemplating(): EngineInterface
+    public function getTemplating(): Environment
     {
         return $this->templating;
     }
