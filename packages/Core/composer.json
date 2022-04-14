@@ -19,8 +19,8 @@
         "php": ">=7.2",
         "ext-json": "*",
         "psr/log": "^1.0",
-        "symfony/translation": "4.*||5.*",
-        "symfony/routing": "4.*||5.*"
+        "symfony/translation": "4.2.*||5.*",
+        "symfony/routing": "4.2.*||5.*"
     },
     "autoload": {
         "psr-4": {
