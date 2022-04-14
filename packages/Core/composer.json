@@ -3,7 +3,7 @@
     "description": "Core mailer library",
     "type": "library",
     "license": "MIT",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "keywords": [
         "mail",
         "email",
