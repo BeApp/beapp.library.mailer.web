@@ -1,6 +1,6 @@
 {
     "name": "beapp/mailer",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "type": "library",
     "keywords": [
         "mail",
@@ -25,8 +25,8 @@
         "mailgun/mailgun-php": "^2.3",
         "ext-json": "*",
         "psr/log": "^1.0",
-        "symfony/translation": "4.*||5.*",
-        "symfony/routing": "4.*||5.*",
+        "symfony/translation": "4.2.*||5.*",
+        "symfony/routing": "4.2.*||5.*",
         "php-amqplib/rabbitmq-bundle": "^1.14",
         "mandrill/mandrill": "^1.0",
         "pda/pheanstalk": "^3.2",

@@ -2,7 +2,7 @@
 
 namespace Beapp\Email\Core\Translation;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @deprecated
