@@ -3,7 +3,7 @@
     "description": "Mandrill transport for Mailer library",
     "type": "library",
     "license": "MIT",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "keywords": [
         "mail",
         "email",
@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=7.2",
-        "beapp/mailer-core": "1.2.0",
+        "beapp/mailer-core": "1.2.1",
         "mandrill/mandrill": "^1.0"
     },
     "extra": {
